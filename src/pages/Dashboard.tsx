@@ -3,7 +3,6 @@ import { useAuth } from '../context/AuthContext'; // Importa el contexto de aute
 import { Download, Trash2 } from 'lucide-react';
 import { deleteMemorandum } from '../ts/DeleteMemorandum'
 import { deleteConfidential } from '../ts/DeleteConfidential'
-import FileUploadModal from '../components/FileUploadModal';
 import { deleteMinuta } from '../ts/DeleteMinuta'
 
 interface Document {
@@ -26,7 +25,6 @@ export default function Dashboard() {
   const [documentType, setDocumentType] = useState<DocumentType>('minuta');
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Estado para manejar el criterio y orden de clasificación
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }>({
@@ -48,13 +46,13 @@ export default function Dashboard() {
       let apiUrl = '';
       switch (documentType) {
         case 'memorandum':
-          apiUrl = 'http://127.0.0.1:5000/memorandums';
+          apiUrl = 'https://flask-n5b4.onrender.com/memorandums';
           break;
         case 'minuta':
-          apiUrl = 'http://127.0.0.1:5000/minutas';
+          apiUrl = 'https://flask-n5b4.onrender.com/minutas';
           break;
         case 'memorandum-confidencial':
-          apiUrl = 'http://127.0.0.1:5000/confidential-memorandums';
+          apiUrl = 'https://flask-n5b4.onrender.com/confidential-memorandums';
           break;
         default:
           console.error('Tipo de documento no válido');
@@ -118,7 +116,7 @@ export default function Dashboard() {
             const privateKeyPem = reader.result as string;
             const encodedPrivateKey = btoa(privateKeyPem); 
 
-            downloadUrl = `http://localhost/php/descargar_confidential.php?id=${documentId}&type=${type}&id_user=${userId}&privateKey=${encodedPrivateKey}`;
+            downloadUrl = `https://r1ymundo.helioho.st/php/descargar_confidential.php?id=${documentId}&type=${type}&id_user=${userId}&privateKey=${encodedPrivateKey}`;
             console.log('Clave privada codificada:', encodedPrivateKey);
             window.location.href = downloadUrl;
           };
@@ -132,14 +130,14 @@ export default function Dashboard() {
 
       switch (typeDocument) {
         case 'memorandum':
-          downloadUrl = `http://localhost/php/descargar_memorandum.php?id=${documentId}&type=${type}&id_user=${userId}`;
+          downloadUrl = `https://r1ymundo.helioho.st/php/descargar_memorandum.php?id=${documentId}&type=${type}&id_user=${userId}`;
           break;
         case 'minuta':
-          downloadUrl = `http://localhost/php/descargar_minuta.php?id=${documentId}&type=${type}&id_user=${userId}`;
+          downloadUrl = `https://r1ymundo.helioho.st/php/descargar_minuta.php?id=${documentId}&type=${type}&id_user=${userId}`;
           break;
         case 'memorandum-confidencial':
 
-          downloadUrl = `http://localhost/php/descargar_confidential.php?id=${documentId}&type=${type}&id_user=${userId}`;
+          downloadUrl = `https://r1ymundo.helioho.st/php/descargar_confidential.php?id=${documentId}&type=${type}&id_user=${userId}`;
           break;
         default:
           console.error('Tipo de documento no válido');

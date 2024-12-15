@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 export const deleteMemorandum = async (memorandumId: string) => {
     try {
         // Enviar solicitud DELETE al backend para eliminar la Memorándum
-        const response = await fetch(`http://127.0.0.1:5000/memorandums/${memorandumId}`, {
+        const response = await fetch(`https://flask-n5b4.onrender.com/memorandums/${memorandumId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

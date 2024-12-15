@@ -4,7 +4,7 @@ import html2pdf from 'html2pdf.js';
 export const generateMemorandumPdf = async (memorandumId: string, type: string, user: any) => {
     try {
         // Obtener los memorándums desde el backend
-        const response = await fetch(`http://127.0.0.1:5000/memorandums?userId=${user.id}&type=${type}`);
+        const response = await fetch(`https://flask-n5b4.onrender.com/memorandums?userId=${user.id}&type=${type}`);
         const memorandums = await response.json();
 
         // Filtrar el memorándum que coincide con el ID

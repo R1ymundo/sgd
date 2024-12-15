@@ -65,10 +65,10 @@ export default function VerifyDocument() {
     let apiUrl = '';
     switch (documentType) {
       case 'memorandum':
-        apiUrl = 'http://127.0.0.1:5000/verificar_archivo';
+        apiUrl = 'https://flask-n5b4.onrender.com/verificar_archivo';
         break;
       case 'minuta':
-        apiUrl = 'http://127.0.0.1:5000/verificar_archivo_minuta';
+        apiUrl = 'https://flask-n5b4.onrender.com/verificar_archivo_minuta';
         break;
       default:
         console.error('Tipo de documento no válido');
@@ -125,7 +125,7 @@ export default function VerifyDocument() {
           </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">
-          {documentType === 'minuta' ? 'Participantes' : 'Destinatario'}
+          {documentType === 'minuta' ? 'Participantes' : 'Remitente'}
           </label>
           <select
             value={sender}

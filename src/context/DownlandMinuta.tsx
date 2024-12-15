@@ -12,7 +12,7 @@ const GenerateMinutaPDF = () => {
         // Hacer una solicitud GET al backend para obtener la minuta
         const fetchMinuta = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/minutas?userId=${localStorage.getItem('user_id')}&type=${type}`);
+            const response = await fetch(`https://flask-n5b4.onrender.com/minutas?userId=${localStorage.getItem('user_id')}&type=${type}`);
             if (!response.ok) {
             throw new Error('Error al obtener las minutas');
             }

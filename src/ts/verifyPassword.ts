@@ -23,7 +23,7 @@ export const verifyPassword = async (userId: string) => {
     }
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/verify-password', {
+        const response = await fetch('https://flask-n5b4.onrender.com/verify-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, password }),

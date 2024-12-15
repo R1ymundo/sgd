@@ -7,6 +7,7 @@ import { verifyPassword } from '../ts/verifyPassword';
 import { sendData } from '../ts/sendData';
 import { fetchUsers } from '../ts/fetchUsers';
 import Swal from 'sweetalert2';
+import Select from 'react-select';
 
 type DocumentType = 'minuta' | 'memorandum' | 'memorandum-confidencial';
 
@@ -90,13 +91,13 @@ export default function CreateDocument() {
     let apiUrl = '';
     switch (documentType) {
       case 'memorandum':
-        apiUrl = 'http://127.0.0.1:5000/memorandums';
+        apiUrl = 'https://flask-n5b4.onrender.com/memorandums';
         break;
       case 'minuta':
-        apiUrl = 'http://127.0.0.1:5000/minutas';
+        apiUrl = 'https://flask-n5b4.onrender.com/minutas';
         break;
       case 'memorandum-confidencial':
-        apiUrl = 'http://127.0.0.1:5000/confidential-memorandums';
+        apiUrl = 'https://flask-n5b4.onrender.com/confidential-memorandums';
         break;
       default:
         console.error('Tipo de documento no válido');
@@ -177,20 +178,44 @@ export default function CreateDocument() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">{documentType === 'minuta' ? 'Participantes' : 'Destinatario'}</label>
-          <select
-            multiple={documentType === 'minuta'} // Si el documento es 'minuta', habilitar la selección múltiple
-            value={recipient}
-            onChange={(e) => setRecipient(Array.from(e.target.selectedOptions, option => option.value))}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
-          >
-            <option value="">{documentType === 'minuta' ? 'Seleccione un participante' : 'Seleccione un remitente'}</option>
-            {recipients.map((r) => (
-              <option key={r._id} value={r._id}>
-                {`${r.nombre} ${r.apellido} - ${r.puesto}`}
-              </option>
-            ))}
-          </select>
+          <label className="block text-sm font-medium text-gray-700">
+            {documentType === 'minuta' ? 'Participantes' : 'Destinatario'}
+          </label>
+          {documentType === 'minuta' ? (
+            <Select
+              isMulti
+              value={recipients.filter(r => recipient.includes(r._id)).map(r => ({
+                value: r._id,
+                label: `${r.nombre} ${r.apellido} - ${r.puesto}`
+              }))}
+              onChange={(selectedOptions) => {
+                const selectedValues = selectedOptions 
+                  ? selectedOptions.map(option => option.value)
+                  : [];
+                setRecipient(selectedValues);
+              }}
+              options={recipients.map(r => ({
+                value: r._id,
+                label: `${r.nombre} ${r.apellido} - ${r.puesto}`
+              }))}
+              className="mt-1"
+              placeholder="Seleccione participantes"
+              noOptionsMessage={() => "No hay opciones disponibles"}
+            />
+          ) : (
+            <select
+              value={recipient[0] || ''} // Tomamos solo el primer valor del array o string vacío
+              onChange={(e) => setRecipient([e.target.value])}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+            >
+              <option value="">Seleccione un remitente</option>
+              {recipients.map((r) => (
+                <option key={r._id} value={r._id}>
+                  {`${r.nombre} ${r.apellido} - ${r.puesto}`}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
         <div>

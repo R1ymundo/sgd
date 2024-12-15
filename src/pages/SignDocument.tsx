@@ -24,7 +24,7 @@ export default function SignDocument() {
 
     setLoading(true);
     try {
-      const apiUrl = `http://127.0.0.1:5000/minutas/pendientes?userId=${user.id}`;
+      const apiUrl = `https://flask-n5b4.onrender.com/minutas/pendientes?userId=${user.id}`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
@@ -75,7 +75,7 @@ export default function SignDocument() {
       const encodedPrivateKey = btoa(privateKeyPem); // Encode the private key to Base64
       console.log(encodedPrivateKey)
 
-      fetch(`http://127.0.0.1:5000/minutas/firma/${selectedDocumentId}`, {
+      fetch(`https://flask-n5b4.onrender.com/minutas/firma/${selectedDocumentId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

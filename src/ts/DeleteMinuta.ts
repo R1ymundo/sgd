@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 export const deleteMinuta = async (minutaId: string) => {
     try {
         // Enviar solicitud DELETE al backend para eliminar la minuta
-        const response = await fetch(`http://127.0.0.1:5000/minutas/${minutaId}`, {
+        const response = await fetch(`https://flask-n5b4.onrender.com//minutas/${minutaId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

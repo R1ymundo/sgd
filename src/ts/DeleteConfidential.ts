@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 export const deleteConfidential = async (confidentialId: string) => {
     try {
         // Enviar solicitud DELETE al backend para eliminar la Memorándum
-        const response = await fetch(`http://127.0.0.1:5000/confidential-memorandums/${confidentialId}`, {
+        const response = await fetch(`https://flask-n5b4.onrender.com/confidential-memorandums/${confidentialId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

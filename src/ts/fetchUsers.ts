@@ -1,6 +1,6 @@
 export const fetchUsers = async (): Promise<Recipient[]> => {
     try {
-        const response = await fetch('http://127.0.0.1:5000/usuarios');
+        const response = await fetch('https://flask-n5b4.onrender.com/usuarios');
         const data = await response.json();
         return data;
         } catch (error) {
