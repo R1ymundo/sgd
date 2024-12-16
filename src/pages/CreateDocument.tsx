@@ -28,6 +28,8 @@ export default function CreateDocument() {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [pemFile, setPemFile] = useState<File | null>(null);
   const [pemBase64, setPemBase64] = useState<string | null>(null);
+  const [secondPemFile, setSecondPemFile] = useState<File | null>(null);
+  const [secondPemBase64, setSecondPemBase64] = useState<string | null>(null);
 
   useEffect(() => {
     // Establecer la fecha actual del sistema
@@ -61,6 +63,35 @@ export default function CreateDocument() {
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const convertSecondPemToBase64 = (file: File) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (reader.result) {
+        const base64String = reader.result as string;
+        const base64Content = base64String.split(',')[1];
+        setSecondPemBase64(base64Content);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const { getRootProps: getSecondRootProps, getInputProps: getSecondInputProps, isDragActive: isSecondDragActive } = useDropzone({
+    accept: {
+      'application/x-pem-file': ['.pem'],
+    },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      console.log('Segundo archivo subido:', acceptedFiles[0].name);
+      setSecondPemFile(acceptedFiles[0]);
+      convertSecondPemToBase64(acceptedFiles[0]);
+    },
+  });
+
+  const handleRemoveSecondFile = () => {
+    setSecondPemFile(null);
+    setSecondPemBase64(null);
   };
 
   const handleRemoveFile = () => {
@@ -111,6 +142,7 @@ export default function CreateDocument() {
       destinatario: documentType === 'minuta' ? recipient : recipient[0], // Para 'minuta' permite múltiples destinatarios
       userId: user.id,  // Ejemplo de user ID
       llavePrivada: pemBase64,  // Aquí se manda solo la parte base64
+      llave: secondPemBase64,
     };
 
     console.log(data)
@@ -134,7 +166,9 @@ export default function CreateDocument() {
     setContent('');
     setRecipient([]); // Reiniciar destinatarios
     setPemFile(null);
+    setSecondPemFile(null);
     setPemBase64(null);
+    setSecondPemBase64(null);
     setDocumentType(documentType);
   };
 
@@ -266,6 +300,48 @@ export default function CreateDocument() {
           )}
         </div>
         )}
+
+        {(documentType === 'memorandum-confidencial') && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Archivo Adicional (.pem)</label>
+            {!secondPemFile ? (
+              <div
+                {...getSecondRootProps()}
+                className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md ${
+                  isSecondDragActive ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300'
+                }`}
+              >
+                <div className="space-y-1 text-center">
+                  <input {...getSecondInputProps()} />
+                  <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                  <div className="flex text-sm text-gray-600">
+                    <p className="pl-1">
+                      {isSecondDragActive
+                        ? 'Suelte el archivo aquí'
+                        : 'Arrastre y suelte su archivo adicional aquí o haga clic para seleccionar'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <div className="flex-shrink-0">
+                  <Upload className="h-6 w-6 text-indigo-500" />
+                </div>
+                <span className="text-sm">{secondPemFile.name}</span>
+                <button
+                  type="button"
+                  onClick={handleRemoveSecondFile}
+                  className="text-sm text-red-600 hover:text-red-800"
+                >
+                  Eliminar
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+
         <div className="mt-6">
           <button
             type="submit"
